@@ -91,7 +91,6 @@ export default class extends help{
     }
     async goBack(message: Message, msg: Message){
         this.level--
-        console.log(this.level)
         await msg.reactions.removeAll()
         if(this.level === 1){
             this.sendIntialEmbed(message, msg)
