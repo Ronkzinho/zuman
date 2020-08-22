@@ -4,14 +4,14 @@ import {categorys } from "../utils/categorys";
 export default abstract class extends command{
     initialEmojis: Array<string>
     categorysEmojis: Array<string>
-    commandsEmojis: Array<string>
+    goBackOrDelete: Array<string>
     constructor(name, client){
         super(name, client)
         this.name = "help"
         this.category = "utility"
-        this.initialEmojis = ["📂"]
+        this.initialEmojis = ["📂", "❌"]
         this.categorysEmojis = ["◀️", "❌", ...categorys.map(c => c.emoji)]
-        this.commandsEmojis = ["◀️", "❌"]
+        this.goBackOrDelete = ["◀️", "❌"]
     }
     async run({ message, args }: runCommand){
         var helpClass = new this.client.classes.Help(this, this.client)
@@ -25,21 +25,25 @@ export default abstract class extends command{
         else{
             var { msg } = await helpClass.sendIntialEmbed(message)
             this.initialEmojis.map(async (emoji) => await msg.react(emoji))
-            const intialCollector = helpClass.createCollector(message, msg, this.initialEmojis.filter(e => !this.commandsEmojis.includes(e)))
+            const goBackOrDeleteCollector = helpClass.createCollector(message, msg, this.goBackOrDelete)
+            const intialCollector = helpClass.createCollector(message, msg, this.initialEmojis.filter(e => !this.goBackOrDelete.includes(e)))
             intialCollector.on("collect", async () => {
                 await helpClass.sendCategorysEmbed(message, msg)
-                await msg.reactions.removeAll()
-                this.categorysEmojis.map(async (emoji) => {
-                    await msg.react(emoji)
-                })
-                const categorysCollector = helpClass.createCollector(message, msg, this.categorysEmojis.filter(e => !this.commandsEmojis.includes(e)))
+                const categorysCollector = helpClass.createCollector(message, msg, this.categorysEmojis.filter(e => !this.goBackOrDelete.includes(e)))
                 categorysCollector.on("collect", async (reaction) => {
                     await helpClass.sendCommandsEmbed(message, msg, categorys.find(c => c.emoji === reaction.emoji.name))
-                    await msg.reactions.removeAll()
-                    this.commandsEmojis.map(async (emoji) => {
+                    this.goBackOrDelete.map(async (emoji) => {
                         await msg.react(emoji)
                     })
                 })
+            })
+            goBackOrDeleteCollector.on("collect", async (reaction) => {
+                if(reaction.emoji.name === "◀️"){
+                    helpClass.goBack(message, msg)
+                }
+                else{
+                    helpClass.deleteAll(message, msg)
+                }
             })
         }
     }
