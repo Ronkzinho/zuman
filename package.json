@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "@types/express": "^4.17.7",
+    "@types/node": "^14.6.0",
+    "cors": "^2.8.5",
+    "discord.js": "^12.3.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "typescript": "^3.9.7"
+  },
+  "scripts": {
+    "watch": "tsc -w",
+    "dev": "nodemon dist/server",
+    "dev2": "nodemon src/server.ts",
+    "start": "tsc && node dist/server",
+    "start2": "ts-node src/server"
+  }
+}
