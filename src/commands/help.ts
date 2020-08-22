@@ -8,7 +8,7 @@ export default abstract class extends command{
     constructor(name, client){
         super(name, client)
         this.name = "help"
-        this.category = "fun"
+        this.category = "utility"
         this.initialEmojis = ["📂"]
         this.categorysEmojis = ["◀️", "❌", ...categorys.map(c => c.emoji)]
         this.commandsEmojis = ["◀️", "❌"]
