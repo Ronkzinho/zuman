@@ -1,5 +1,8 @@
 {
     "client": {
         "mention": "Olá, tudo bem? Meu prefixo é \\`${this.prefix}\\`"
+    },
+    "links": {
+        "desciption": "Eu sou um bot criado pelo <@{owner1}> e pelo <@{owner2}>.\nAqui estão alguns links relacionados ao bot, que talvez você possa querer!"
     }
 }

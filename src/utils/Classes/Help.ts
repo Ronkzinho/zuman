@@ -39,7 +39,7 @@ export default class extends help{
     }
     async sendCommandsEmbed(message: Message, msg: Message, category: categorysInterface){
         const commandsEmbed = new MessageEmbed({
-            title: "Comandos:",
+            title: `${category.translation}:`,
             description: `${this.client.filteredCommands.filter(c => c.category === category.name).map(command => `\`${this.client.prefix + command.name}\` - ${command.description ? command.description : "Sem descrição aparente!"}`).join("\n") || "Nenhum comando possui essa categoria!"}`,
             color: message.member.displayColor
         })
@@ -52,7 +52,7 @@ export default class extends help{
         return { commandsEmbed }
     }
     createCollector(message: Message, msg: Message, emojis: Array<string>){
-        return msg.createReactionCollector((reaction, user) => user.id === message.author.id && emojis.includes(reaction.emoji.name), { time: 30000 })
+        return msg.createReactionCollector((reaction, user) => user.id === message.author.id && emojis.includes(reaction.emoji.name), { time: 60000 })
     }
     async sendCommandHelp(message: Message, args: runCommand["args"]){
         const command = this.client.filteredCommands.find(c => c.name === args[0] || c.aliases.includes(args[0]))

@@ -14,6 +14,8 @@ export default class Zuman extends Client{
     errors: typeof errors
     messages: typeof messages
     classes: { Help: typeof Classes["Help"] }
+    inviteLink: string
+    gitHubRepository: string
     constructor(options = {}){
         super(options)
         this.commands = new Collection()
@@ -23,6 +25,7 @@ export default class Zuman extends Client{
         this.messages = messages
         this.classes = { Help: Classes.Help }
         this.prefix = "ctes?"
+        this.gitHubRepository = "https://github.com/Ronkzinho/zuman/"
         this.initializeEvents(path.resolve(__dirname, "events"))
         this.initializeCommands(path.resolve(__dirname, "commands"))
     }
