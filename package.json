@@ -12,6 +12,8 @@
     "watch": "tsc -w",
     "dev": "nodemon dist/server",
     "dev2": "nodemon src/server.ts",
+    "web": "tsc && node dist/server",
+    "web2": "ts-node src/sever",
     "start": "tsc && node dist/index",
     "start2": "ts-node src/index"
   }
