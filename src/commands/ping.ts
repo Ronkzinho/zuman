@@ -10,6 +10,6 @@ export default abstract class extends command{
     }
     async run({ message }: runCommand){
         const msg = await message.channel.send("Ping?")
-        await msg.edit(`Pong! ${msg.createdAt.getTime() - message.createdAt.getTime()}ms`)
+        await msg.edit(`Pong! ${msg.createdTimestamp - message.createdTimestamp}ms`)
     }
 }
