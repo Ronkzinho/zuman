@@ -1,7 +1,8 @@
-import { MessageEmbed, Message } from "discord.js"
+import { Message } from "discord.js"
 import { runCommand } from "../command"
 import help from "../../commands/help"
 import { categorys, categorysInterface } from "../categorys"
+import { Embed } from "."
 
 export default class extends help{
     level: number
@@ -10,12 +11,11 @@ export default class extends help{
         this.level = 0
     }
     async sendIntialEmbed(message: Message, msg?: Message){
-        const initialEmbed = new MessageEmbed({
+        const initialEmbed = new Embed({
             title: `Olá ${message.author.username}, tudo bem?`,
             description: `Eu tenho ${this.client.commands.filter(c => !c.owner && !c.hidden).size} comandos!\n` + 
             `Para receber ajuda de um comando específico digite: \`${this.client.prefix + this.name}\``,
-            color: message.member.displayColor
-        })
+        }, message)
         msg = msg ? await msg.edit(initialEmbed) : await message.channel.send(initialEmbed)
         this.initialEmojis.map(async (emoji) => {
             await msg.react(emoji)
@@ -24,11 +24,10 @@ export default class extends help{
         return { msg, initialEmbed }
     }
     async sendCategorysEmbed(message: Message, msg: Message){
-        const categorysEmbed = new MessageEmbed({
+        const categorysEmbed = new Embed({
             title: `Categorias:`,
             description: `${categorys.map(category => `${category.emoji} - ${category.translation}: ${this.client.filteredCommands.filter(c => c.category === category.name).size}`).join("\n")}`,
-            color: message.member.displayColor
-        })
+        }, message)
         await msg.reactions.removeAll()
         this.categorysEmojis.map(async (emoji) => {
             await msg.react(emoji)
@@ -38,11 +37,10 @@ export default class extends help{
         return { categorysEmbed }
     }
     async sendCommandsEmbed(message: Message, msg: Message, category: categorysInterface){
-        const commandsEmbed = new MessageEmbed({
+        const commandsEmbed = new Embed({
             title: `${category.translation}:`,
             description: `${this.client.filteredCommands.filter(c => c.category === category.name).map(command => `\`${this.client.prefix + command.name}\` - ${command.description ? command.description : "Sem descrição aparente!"}`).join("\n") || "Nenhum comando possui essa categoria!"}`,
-            color: message.member.displayColor
-        })
+        }, message)
         await msg.reactions.removeAll()
         this.goBackOrDelete.map(async (emoji) => {
             await msg.react(emoji)
@@ -58,7 +56,7 @@ export default class extends help{
         const command = this.client.filteredCommands.find(c => c.name === args[0] || c.aliases.includes(args[0]))
         if(!command) return { error: this.client.errors.help.invalidCommandName }
         else{
-            const commandHelpEmbed = new MessageEmbed({
+            const commandHelpEmbed = new Embed({
                 title: `${this.client.prefix + command.name}`,
                 description: `${command.description ? command.description : "Sem descrição aparente!"}`,
                 fields: [
@@ -79,8 +77,7 @@ export default class extends help{
                         value: `\`\`\`${command.allowDm ? "Sim" : "Não"}\`\`\``
                     }
                 ],
-                color: message.member.displayColor
-            })
+            }, message)
             return { msg: await message.channel.send(commandHelpEmbed), commandHelpEmbed }
         }
     }

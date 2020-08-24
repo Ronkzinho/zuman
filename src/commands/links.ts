@@ -1,5 +1,5 @@
 import { command, runCommand } from "../utils/command";
-import { MessageEmbed } from "discord.js";
+import { Embed } from "../utils/Classes";
 
 export default abstract class extends command{
     constructor(name, client){
@@ -11,22 +11,18 @@ export default abstract class extends command{
         this.description = "Comando para que você possa ver os links relacionados ao bot!"
         this.usage = [`${this.name}`]
     }
-    async run({ message }: runCommand){
-        var embed = new MessageEmbed({
-            title: `Olá, ${this.client.owners.includes(message.author.id) ? "dono, como está seu dia?" : message.author.username + ", tudo bem?"}`,
-            description: `${this.client.messages.links.desciption.replace("{owner1}", this.client.owners[0]).replace("{owner2}", this.client.owners[1])}`,
-            fields: [
-                {
-                    name: "Convite o bot para o seu servidor:",
-                    value: `[Clique aqui](${this.client.inviteLink})`
-                },
-                {
-                    name: "Código fonte do bot:",
-                    value: `[Clique aqui](${this.client.gitHubRepository})`
-                }
-            ],
-            color: message.member.displayColor
+    async run({ message, pJ }: runCommand){
+        const fields = []
+        this.client.messages.commands.links.fields.map(c => {
+            var { inviteLink, gitHubRepository } = this.client
+            c.value = pJ(c.value, [{ inviteLink }, { gitHubRepository }])
+            fields.push(c)
         })
+        const embed = new Embed({
+            title: `Olá, ${this.client.owners.includes(message.author.id) ? "dono, como está seu dia?" : message.author.username + ", tudo bem?"}`,
+            description: `${pJ(this.client.messages.commands.links.desciption, [{ owner0: this.client.owners[0] }, { owner1: this.client.owners[1] }])}`,
+            fields
+        }, message)
         message.channel.send(embed)
     }
 }

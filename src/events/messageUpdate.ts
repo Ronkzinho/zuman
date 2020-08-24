@@ -1,4 +1,4 @@
-import Zuman from "src/client";
+import Zuman from "../client";
 import { Message } from "discord.js";
 
 export default async function(this: Zuman, oldMessage: Message, newMessage: Message){

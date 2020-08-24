@@ -1,5 +1,5 @@
 import { command, runCommand } from "../utils/command";
-import { MessageEmbed } from "discord.js";
+import { Embed } from "../utils/Classes";
 
 export default abstract class extends command{
     constructor(name, client){
@@ -10,11 +10,10 @@ export default abstract class extends command{
     async run({ message, args }: runCommand){
         try{
             const result = eval(args.join(' '))
-            return message.channel.send(new MessageEmbed({
+            return message.channel.send(new Embed({
                 title: "Resultado do eval:",
                 description: result.toString(),
-                color: message.member.displayColor
-            }))
+            }, message))
         }
         catch(error){
             return message.channel.send(error.toString())

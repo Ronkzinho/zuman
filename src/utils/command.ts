@@ -12,12 +12,12 @@ export interface commandIterface{
     description?: string;
     usage?: Array<string>;
     hidden?: Boolean;
-    run({ message, args, prefix }: runCommand): any
+    run({ message, args, pJ }: runCommand): any
 }
 export interface runCommand{
     message: Message
     args: Array<string>
-    prefix: string
+    pJ: Zuman["parseJson"]
 }
 export class command implements commandIterface{
     name;
@@ -42,5 +42,5 @@ export class command implements commandIterface{
         this.aliases = []
         this.usage = []
     }
-    run({ message, args, prefix }: runCommand){ }
+    run(options: runCommand){ }
 }

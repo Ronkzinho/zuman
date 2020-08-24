@@ -63,4 +63,12 @@ export default class Zuman extends Client{
             }
         })
     }
+    parseJson(toParse: string, replaces: Array<{[x: string]: string }>){
+        let getter = toParse
+        replaces.map((replace) => {
+            const key = Object.keys(replace)[0]
+            getter = getter.replace(`{${key}}`, replace[key])
+        })
+        return getter
+    }
 }

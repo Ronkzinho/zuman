@@ -8,7 +8,6 @@
     "outDir": "./dist",
     "moduleResolution": "node",
     "removeComments": true,
-    "baseUrl": ".",
     "skipLibCheck": true
   },
   "exclude": ["node_modules", "bin", "**/__mocks__*", "**/*.spec.**", "test", "assets"],
